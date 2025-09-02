@@ -3,112 +3,270 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Webnovel — Text View</title>
-  <meta name="description" content="Tampilan website untuk membaca webnovel — fokus, responsif, dan nyaman di mata." />
+  <title>Chapter 1 - </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --maxw:780px; --accent: #3b82f6;
+      --bg:#0b1116; /* very dark navy */
+      --panel:#0f1720; /* slightly lighter */
+      --text:#e6eef6; /* soft white */
+      --muted:#9fb0c4;
+      --accent:#7dd3fc; /* cyan */
+      --max-width:820px;
+      --base-font-size:20px;
+      --line-height:1.8;
+      --font-family: 'Libre Baskerville', serif;
     }
-    [data-theme="dark"]{ --bg:#0b1220; --fg:#e6eef8; --muted:#9aa7bb; }
+
+    /* basic reset */
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--fg); line-height:1.7}
-    header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid rgba(0,0,0,0.04)}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#6ee7b7);display:grid;place-items:center;color:white;font-weight:700}
-    .title{font-size:18px;font-weight:600}
-    .controls{display:flex;gap:8px;align-items:center}
-    button, select{background:transparent;border:1px solid rgba(0,0,0,0.08);padding:8px 10px;border-radius:8px;cursor:pointer}
-    [data-theme="dark"] button{border-color:rgba(255,255,255,0.06)}
-    main{padding:28px 20px;display:flex;justify-content:center}
-    .reader{max-width:var(--maxw);width:100%}
-    .meta{color:var(--muted);font-size:14px;margin-bottom:18px}
-    .content{font-size:20px;background:transparent;padding:12px 4px}
-    .content p{margin:0 0 18px}
-    .footer{padding:18px 20px;border-top:1px solid rgba(0,0,0,0.04);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
-    .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
-    .controls .seg{display:inline-flex;background:rgba(0,0,0,0.03);padding:6px;border-radius:8px}
-    [data-theme="dark"] .controls .seg{background:rgba(255,255,255,0.03)}
-    @media (max-width:640px){.content{font-size:18px}}
+    html,body{height:100%;margin:0}
+    body{
+      background:linear-gradient(180deg,var(--bg) 0%, #071017 100%);
+      color:var(--text);
+      font-family:var(--font-family);
+      font-size:var(--base-font-size);
+      line-height:var(--line-height);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-top:72px; /* for toolbar */
+    }
+
+    /* top toolbar */
+    .toolbar{
+      position:fixed;top:8px;left:8px;right:8px;height:56px;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);z-index:60;box-shadow:0 6px 18px rgba(2,6,23,0.6);
+    }
+    .brand{font-weight:700;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--accent)}
+    .controls{display:flex;align-items:center;gap:8px;margin-left:auto}
+    button,select{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 10px;border-radius:8px;font-size:14px}
+    input[type=range]{accent-color:var(--accent)}
+
+    .container{max-width:1200px;margin:40px auto;padding:20px;display:grid;grid-template-columns:260px 1fr;gap:32px}
+
+    /* sidebar */
+    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .chapters{list-style:none;padding:0;margin:0}
+    .chapters li{padding:10px;border-radius:8px;margin-bottom:6px;cursor:pointer;color:var(--muted)}
+    .chapters li.active{background:rgba(255,255,255,0.02);color:var(--text)}
+
+    /* reader */
+    .reader{background:linear-gradient(180deg,var(--panel), #071017);padding:36px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+    .meta{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:var(--muted);font-family:Inter,system-ui}
+    h1{margin:0 0 8px 0;font-size:28px}
+    .subtitle{font-size:14px}
+
+    article{max-width:var(--max-width);margin:0 auto;font-size:1rem}
+    p{margin:18px 0;text-align:justify}
+    .progress{height:6px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:22px}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent), #60a5fa);width:0%}
+
+    /* responsive */
+    @media (max-width:920px){.container{grid-template-columns:1fr;}.sidebar{order:2}}
+
+    /* small helper */
+    .muted{color:var(--muted)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo">W</div>
-      <div>
-        <div class="title">Webnovel</div>
-        <div style="font-size:12px;color:var(--muted)">Tempat membaca cerita Anda</div>
-      </div>
+  <div class="toolbar">
+    <div class="brand">WebNovel • Night</div>
+
+    <div style="display:flex;gap:8px;align-items:center;margin-left:14px">
+      <div class="muted">Mode:</div>
+      <button id="toggle-theme" aria-pressed="true">Malam</button>
     </div>
-    <div class="controls" role="toolbar" aria-label="Reader controls">
-      <div class="seg" role="group" aria-label="Font size">
-        <button id="dec" title="Perkecil font" aria-label="Perkecil font">A-</button>
-        <button id="reset" title="Reset font" aria-label="Reset font">A</button>
-        <button id="inc" title="Perbesar font" aria-label="Perbesar font">A+</button>
-      </div>
-      <button id="toggleTheme" title="Toggle tema gelap/terang">🌙</button>
-      <button id="print" title="Cetak halaman">🖨️</button>
-      <select id="fontSelect" aria-label="Pilih jenis font">
-        <option value="Inter, system-ui, -apple-system, 'Segoe UI', Roboto">Sans (Default)</option>
-        <option value="Georgia, 'Times New Roman', serif">Serif (Baca panjang)</option>
-        <option value="'Courier New', monospace">Monospace</option>
+
+    <div class="controls">
+      <label class="muted">Ukuran</label>
+      <button id="dec-font">A-</button>
+      <button id="inc-font">A+</button>
+
+      <label class="muted">Font</label>
+      <select id="font-select" title="Pilih jenis font">
+        <option value="serif">Libre Baskerville (Serif)</option>
+        <option value="sans">Inter (Sans)</option>
       </select>
+
+      <label class="muted">Spasi</label>
+      <input id="line-range" type="range" min="1.2" max="2.2" step="0.05" value="1.8">
+
+      <label class="muted">Lebar</label>
+      <input id="width-range" type="range" min="560" max="1100" step="20" value="820">
+
+      <button id="open-toc">Daftar Bab</button>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <article class="reader" id="reader">
-      <div class="meta" id="meta">Bab 1 — 3 September 2025 • 7 menit baca</div>
-      <section class="content" id="content" aria-label="Konten teks">
-<p>Angin malam bertiup lembut melewati jendela tua, membawa aroma tanah basah sehabis hujan. Di sebuah kota kecil yang dikelilingi hutan, cahaya lampu jalan berkelip samar, seakan menandai awal dari sesuatu yang besar.</p>
+  <main class="container">
+    <aside class="sidebar" id="toc">
+      <h3 style="margin-top:0">Daftar Bab</h3>
+      <ul class="chapters" id="chap-list">
+        <li class="active" data-chapter="1">Chapter</li>
+        <li data-chapter="2">I</li>
+        <li data-chapter="3">HATE</li>
+        <li data-chapter="4">NIGIGER</li>
+      </ul>
+    </aside>
 
-<p>Di sinilah perjalanan dimulai. Tokoh utama Anda dapat diperkenalkan, dunianya dibangun, dan konflik pertama perlahan disingkap. Setiap bab akan ditaruh di bagian <code>.content</code> ini. Anda bisa mengganti isi paragraf dengan webnovel Anda sendiri.</p>
+    <section class="reader">
+      <div class="meta">
+        <div>
+          <h1 id="title">Chapter 1 - </h1>
+          <div class="subtitle">oleh Penulis • 8.5k kata • 12 Februari 2025</div>
+        </div>
+      </div>
 
-<p>Tips: Untuk setiap bab, buat file HTML baru dengan struktur yang sama, lalu hubungkan antar-bab menggunakan tautan di akhir cerita atau di navigasi khusus.</p>
-      </section>
-    </article>
+      <article id="chapter" style="max-width:var(--max-width)">
+        <!-- contoh teks; ganti dengan isi asli novel Anda -->
+        <p>Inside the carantine facility a boy stood with a nervous expression, the boy has eeire aura as if there’s a presence that hollow creatures have. He remained silent until a hand reached for his shoulder from behind
+“Are you okay Laine?”
+Laine shifted and gazed at the woman who stood beside him. The woman as a sharp feature with smooth delicate surface. She has a long black hair that’s reach her back, the most stiking about her though were her eyes with sharp blue color that seemed to pierce anything it looked. That woman was aunt Serena, she was a healer that worked at nearby medical center.  
+His face must have made an expression that the she starts worrying.
+“I’ll be fine, just… a little nervous”
+She put a worry expression on her face.
+“Don’t be nervous” she remained for a while and forced out a smile “Besides didn’t your pretty aunt turns out just fine?” she laughed.
+Laine chuckled for a while until a man voice called him from behind.
+“Candidate Laine, are you ready?
+Laine turned around to meet the voice, his gaze stoped at the man beside him. The man is tall and has an imposing build, his broad shoulders and athletic pyshique shown that he’s a powerful awakened with combat abillites. His gaze is sharp like all seasoned fighter does, he has a sharp feature with short black hair combed to the side.
+‘I wonder what ability I would get’
+“Yes sir” He turn around to meet the woman and bowed slightly “Thank you for seeing me off, aunt Serena”
+She waved her hand 
+“Ah its nothing, and good luck with your awakening Laine”
+Laine nodded and followed the man
+***
+The man led him from room to room, where they checked his height, weight, and physique before moving on. Eventually, they arrived at a door that led downstairs. They continued down until they reached a specific chamber.
+Inside was a small room with a white bed and a chair beside it. The walls held a large two-way mirror, a camera on the ceiling, and a red button mounted beside the glass. The chamber was built from sturdy metal alloy, designed to contain any awakened who might turn into a hollow.
+“Just wait here for a while. There’s supposed to be another awakened watching you.”
+Laine nodded and sat on the bed. The officer closed the door and left him alone. For a while, Laine sat motionless—until the sound of a door opening caught his attention.
+A woman entered, studying him closely. Like most awakened, she had sharp features. Her black hair hung to her shoulders, and her cold green eyes gave her an unapproachable air.
+“Ahem. Candidate Laine, isn’t it?”
+Laine must have been staring at her strangely, because he only gave a stiff nod in reply.
+“My name is Cecily. I’m here to help candidates like you awaken. I possess powers that assist in the process.”
+
+</p>
+      </article>
+
+      <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div>© 2025 Webnovel Anda</div>
-    <div style="display:flex;gap:12px;align-items:center"><small>Bab berikutnya →</small></div>
-  </footer>
-
   <script>
-    (function(){
-      const content = document.getElementById('content');
-      const dec = document.getElementById('dec');
-      const inc = document.getElementById('inc');
-      const reset = document.getElementById('reset');
-      const toggle = document.getElementById('toggleTheme');
-      const printBtn = document.getElementById('print');
-      const fontSelect = document.getElementById('fontSelect');
+    // controls
+    const root = document.documentElement;
+    const chapter = document.getElementById('chapter');
+    const prog = document.getElementById('prog');
+    const title = document.getElementById('title');
 
-      const prefs = {
-        fontSize: 20,
-        theme: localStorage.getItem('tv-theme') || 'light',
-        fontFamily: localStorage.getItem('tv-font') || ''
-      };
-      function applyPrefs(){
-        content.style.fontSize = prefs.fontSize + 'px';
-        document.documentElement.setAttribute('data-theme', prefs.theme === 'dark' ? 'dark' : 'light');
-        if(prefs.fontFamily) content.style.fontFamily = prefs.fontFamily;
+    // font size controls
+    const inc = document.getElementById('inc-font');
+    const dec = document.getElementById('dec-font');
+    let baseSize = parseFloat(getComputedStyle(root).getPropertyValue('--base-font-size')) || 20;
+
+    function applyFontSize(){
+      root.style.setProperty('--base-font-size', baseSize + 'px');
+    }
+    inc.addEventListener('click', ()=>{ baseSize = Math.min(30, baseSize + 1); applyFontSize(); });
+    dec.addEventListener('click', ()=>{ baseSize = Math.max(14, baseSize - 1); applyFontSize(); });
+
+    // font family select
+    const fontSelect = document.getElementById('font-select');
+    fontSelect.addEventListener('change', e=>{
+      if(e.target.value === 'sans') root.style.setProperty('--font-family', "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial");
+      else root.style.setProperty('--font-family', "'Libre Baskerville', serif");
+    });
+
+    // line height
+    const lineRange = document.getElementById('line-range');
+    lineRange.addEventListener('input', e=>{ root.style.setProperty('--line-height', e.target.value); document.body.style.lineHeight = e.target.value; });
+
+    // width
+    const widthRange = document.getElementById('width-range');
+    widthRange.addEventListener('input', e=>{ root.style.setProperty('--max-width', e.target.value + 'px'); });
+
+    // chapters
+    const chapters = document.getElementById('chap-list');
+    chapters.addEventListener('click', e=>{
+      const li = e.target.closest('li');
+      if(!li) return;
+      [...chapters.querySelectorAll('li')].forEach(x=>x.classList.remove('active'));
+      li.classList.add('active');
+      // contoh pergantian konten sederhana (di sini hanya judul dipakai)
+      title.textContent = li.textContent;
+      // tulis logika fetch atau load konten bab di sini untuk produksi
+      chapter.innerHTML = '<p>Memuat teks untuk ' + li.textContent + '...</p>';
+      // simulasi isi
+      setTimeout(()=>{
+        chapter.innerHTML = '<p>Ini adalah isi contoh untuk '+li.textContent+'. Ganti kode ini dengan konten bab nyata dari server Anda atau file markdown yang di-render menjadi HTML.</p>' + '<p>Konten lebih banyak... menulis cerita Anda di sini.</p>';
+        window.scrollTo({top:0,behavior:'smooth'});
+      },350);
+    });
+
+    // progress
+    function updateProgress(){
+      const rect = chapter.getBoundingClientRect();
+      const total = chapter.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY;
+      // approximate: how far user has scrolled inside article
+      const articleTop = document.querySelector('.reader').offsetTop;
+      const articleHeight = document.querySelector('.reader').scrollHeight - window.innerHeight;
+      let pct = 0;
+      if(articleHeight>0) pct = Math.min(100, Math.max(0, (window.scrollY - articleTop) / articleHeight * 100));
+      prog.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+
+    // TOC toggle (mobile)
+    document.getElementById('open-toc').addEventListener('click', ()=>{
+      const toc = document.getElementById('toc');
+      toc.style.display = toc.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // theme toggle (ke default malam)
+    const themeBtn = document.getElementById('toggle-theme');
+    themeBtn.addEventListener('click', ()=>{
+      const isDark = themeBtn.getAttribute('aria-pressed') === 'true';
+      if(isDark){
+        // switch to light
+        document.body.style.background = '#f6f7fb';
+        root.style.setProperty('--bg','#f6f7fb');
+        root.style.setProperty('--panel','#ffffff');
+        root.style.setProperty('--text','#0b1220');
+        root.style.setProperty('--muted','#4b5563');
+        root.style.setProperty('--accent','#2563eb');
+        themeBtn.textContent = 'Terang';
+        themeBtn.setAttribute('aria-pressed','false');
+      } else {
+        // switch to dark
+        root.style.setProperty('--bg','#0b1116');
+        root.style.setProperty('--panel','#0f1720');
+        root.style.setProperty('--text','#e6eef6');
+        root.style.setProperty('--muted','#9fb0c4');
+        root.style.setProperty('--accent','#7dd3fc');
+        themeBtn.textContent = 'Malam';
+        themeBtn.setAttribute('aria-pressed','true');
       }
-      applyPrefs();
+    });
 
-      inc.addEventListener('click', ()=>{ prefs.fontSize = Math.min(48, prefs.fontSize + 2); applyPrefs(); localStorage.setItem('tv-fontsize', prefs.fontSize);});
-      dec.addEventListener('click', ()=>{ prefs.fontSize = Math.max(12, prefs.fontSize - 2); applyPrefs(); localStorage.setItem('tv-fontsize', prefs.fontSize);});
-      reset.addEventListener('click', ()=>{ prefs.fontSize = 20; applyPrefs(); localStorage.setItem('tv-fontsize', prefs.fontSize);});
-
-      toggle.addEventListener('click', ()=>{ prefs.theme = prefs.theme === 'dark' ? 'light' : 'dark'; applyPrefs(); localStorage.setItem('tv-theme', prefs.theme); toggle.textContent = prefs.theme === 'dark' ? '☀️' : '🌙'; });
-
-      printBtn.addEventListener('click', ()=> window.print());
-
-      fontSelect.addEventListener('change', (e)=>{ prefs.fontFamily = e.target.value; applyPrefs(); localStorage.setItem('tv-font', prefs.fontFamily); });
-
-      const savedSize = parseInt(localStorage.getItem('tv-fontsize'));
-      if(!isNaN(savedSize)) { prefs.fontSize = savedSize; applyPrefs(); }
-    })();
+    // preserve some preferences in localStorage
+    function savePrefs(){
+      const prefs = {size:baseSize,font:fontSelect.value,line:lineRange.value,width:widthRange.value};
+      localStorage.setItem('reader-prefs', JSON.stringify(prefs));
+    }
+    function loadPrefs(){
+      try{
+        const prefs = JSON.parse(localStorage.getItem('reader-prefs'));
+        if(!prefs) return;
+        baseSize = prefs.size||baseSize; applyFontSize();
+        if(prefs.font) fontSelect.value = prefs.font; fontSelect.dispatchEvent(new Event('change'));
+        if(prefs.line) lineRange.value = prefs.line; lineRange.dispatchEvent(new Event('input'));
+        if(prefs.width) widthRange.value = prefs.width; widthRange.dispatchEvent(new Event('input'));
+      }catch(e){/* ignore */}
+    }
+    [inc,dec,fontSelect,lineRange,widthRange].forEach(el=>el.addEventListener('change', savePrefs));
+    window.addEventListener('beforeunload', savePrefs);
+    loadPrefs();
   </script>
 </body>
 </html>
