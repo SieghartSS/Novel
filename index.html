@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Text View — Minimal Reader</title>
-  <meta name="description" content="Tampilan website untuk membaca teks — fokus, responsif, dan dapat disesuaikan." />
+  <title>Webnovel — Text View</title>
+  <meta name="description" content="Tampilan website untuk membaca webnovel — fokus, responsif, dan nyaman di mata." />
   <style>
     :root{
       --bg:#ffffff; --fg:#111827; --muted:#6b7280; --maxw:780px; --accent: #3b82f6;
@@ -28,17 +28,16 @@
     .sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
     .controls .seg{display:inline-flex;background:rgba(0,0,0,0.03);padding:6px;border-radius:8px}
     [data-theme="dark"] .controls .seg{background:rgba(255,255,255,0.03)}
-    .btn-ghost{border:0;padding:6px 8px}
     @media (max-width:640px){.content{font-size:18px}}
   </style>
 </head>
 <body>
   <header>
     <div class="brand">
-      <div class="logo">T</div>
+      <div class="logo">W</div>
       <div>
-        <div class="title">Text View</div>
-        <div style="font-size:12px;color:var(--muted)">Focused reading template</div>
+        <div class="title">Webnovel</div>
+        <div style="font-size:12px;color:var(--muted)">Tempat membaca cerita Anda</div>
       </div>
     </div>
     <div class="controls" role="toolbar" aria-label="Reader controls">
@@ -49,7 +48,6 @@
       </div>
       <button id="toggleTheme" title="Toggle tema gelap/terang">🌙</button>
       <button id="print" title="Cetak halaman">🖨️</button>
-      <button id="copy" title="Salin teks">📋</button>
       <select id="fontSelect" aria-label="Pilih jenis font">
         <option value="Inter, system-ui, -apple-system, 'Segoe UI', Roboto">Sans (Default)</option>
         <option value="Georgia, 'Times New Roman', serif">Serif (Baca panjang)</option>
@@ -60,43 +58,32 @@
 
   <main>
     <article class="reader" id="reader">
-      <div class="meta" id="meta">Pengarang — 3 September 2025 • 5 menit baca</div>
-      <section class="content" id="content" contenteditable="true" aria-label="Konten teks">
-<p>Ini adalah contoh teks. Ganti isi di sini dengan tulisan Anda. Area ini dapat diedit langsung di browser (contenteditable) untuk demo — saat mengintegrasikan ke CMS, ganti dengan konten server-side.</p>
+      <div class="meta" id="meta">Bab 1 — 3 September 2025 • 7 menit baca</div>
+      <section class="content" id="content" aria-label="Konten teks">
+<p>Angin malam bertiup lembut melewati jendela tua, membawa aroma tanah basah sehabis hujan. Di sebuah kota kecil yang dikelilingi hutan, cahaya lampu jalan berkelip samar, seakan menandai awal dari sesuatu yang besar.</p>
 
-<p>Fitur bawaan:
-<ul>
-<li>Mode gelap/terang</li>
-<li>Kontrol ukuran font</li>
-<li>Ganti jenis font</li>
-<li>Salin cepat dan cetak</li>
-<li>Responsif untuk layar kecil</li>
-</ul>
-</p>
+<p>Di sinilah perjalanan dimulai. Tokoh utama Anda dapat diperkenalkan, dunianya dibangun, dan konflik pertama perlahan disingkap. Setiap bab akan ditaruh di bagian <code>.content</code> ini. Anda bisa mengganti isi paragraf dengan webnovel Anda sendiri.</p>
 
-<p>Tekan Ctrl + + untuk memperbesar, Ctrl + - untuk memperkecil, Ctrl + 0 untuk reset (Windows). Pada Mac gunakan Cmd.</p>
+<p>Tips: Untuk setiap bab, buat file HTML baru dengan struktur yang sama, lalu hubungkan antar-bab menggunakan tautan di akhir cerita atau di navigasi khusus.</p>
       </section>
     </article>
   </main>
 
   <footer class="footer">
-    <div>Minimal reader • dibuat untuk menampilkan teks</div>
-    <div style="display:flex;gap:12px;align-items:center"><small>Tip: klik area teks untuk mulai mengedit</small></div>
+    <div>© 2025 Webnovel Anda</div>
+    <div style="display:flex;gap:12px;align-items:center"><small>Bab berikutnya →</small></div>
   </footer>
 
   <script>
     (function(){
       const content = document.getElementById('content');
-      const reader = document.getElementById('reader');
       const dec = document.getElementById('dec');
       const inc = document.getElementById('inc');
       const reset = document.getElementById('reset');
       const toggle = document.getElementById('toggleTheme');
       const printBtn = document.getElementById('print');
-      const copyBtn = document.getElementById('copy');
       const fontSelect = document.getElementById('fontSelect');
 
-      // Save preferences
       const prefs = {
         fontSize: 20,
         theme: localStorage.getItem('tv-theme') || 'light',
@@ -116,30 +103,11 @@
       toggle.addEventListener('click', ()=>{ prefs.theme = prefs.theme === 'dark' ? 'light' : 'dark'; applyPrefs(); localStorage.setItem('tv-theme', prefs.theme); toggle.textContent = prefs.theme === 'dark' ? '☀️' : '🌙'; });
 
       printBtn.addEventListener('click', ()=> window.print());
-      copyBtn.addEventListener('click', async ()=>{
-        try{
-          const text = content.innerText.trim();
-          await navigator.clipboard.writeText(text);
-          copyBtn.textContent = '✅';
-          setTimeout(()=> copyBtn.textContent = '📋',900);
-        }catch(e){ alert('Tidak dapat menyalin: ' + e.message)}
-      });
 
       fontSelect.addEventListener('change', (e)=>{ prefs.fontFamily = e.target.value; applyPrefs(); localStorage.setItem('tv-font', prefs.fontFamily); });
 
-      // Keyboard shortcuts (Ctrl/Cmd + +/-/0)
-      window.addEventListener('keydown', (ev)=>{
-        const mod = ev.ctrlKey || ev.metaKey;
-        if(!mod) return;
-        if(ev.key === '+' || ev.key === '='){ ev.preventDefault(); inc.click(); }
-        if(ev.key === '-') { ev.preventDefault(); dec.click(); }
-        if(ev.key === '0'){ ev.preventDefault(); reset.click(); }
-      });
-
-      // Load persisted font size if present
       const savedSize = parseInt(localStorage.getItem('tv-fontsize'));
       if(!isNaN(savedSize)) { prefs.fontSize = savedSize; applyPrefs(); }
-
     })();
   </script>
 </body>
