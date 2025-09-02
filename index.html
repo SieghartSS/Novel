@@ -1,271 +1,97 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chapter 1 - </title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webnovel Reader</title>
   <style>
-    :root{
-      --bg:#0b1116; /* very dark navy */
-      --panel:#0f1720; /* slightly lighter */
-      --text:#e6eef6; /* soft white */
-      --muted:#9fb0c4;
-      --accent:#7dd3fc; /* cyan */
-      --max-width:820px;
-      --base-font-size:20px;
-      --line-height:1.8;
-      --font-family: 'Libre Baskerville', serif;
+    body {
+      background-color: #1e1e2f;
+      color: #f0f0f0;
+      font-family: 'Georgia', serif;
+      font-size: 18px;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
     }
 
-    /* basic reset */
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    body{
-      background:linear-gradient(180deg,var(--bg) 0%, #071017 100%);
-      color:var(--text);
-      font-family:var(--font-family);
-      font-size:var(--base-font-size);
-      line-height:var(--line-height);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding-top:72px; /* for toolbar */
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 40px 20px;
     }
 
-    /* top toolbar */
-    .toolbar{
-      position:fixed;top:8px;left:8px;right:8px;height:56px;display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);z-index:60;box-shadow:0 6px 18px rgba(2,6,23,0.6);
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #ffdd57;
     }
-    .brand{font-weight:700;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--accent)}
-    .controls{display:flex;align-items:center;gap:8px;margin-left:auto}
-    button,select{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 10px;border-radius:8px;font-size:14px}
-    input[type=range]{accent-color:var(--accent)}
 
-    .container{max-width:1200px;margin:40px auto;padding:20px;display:grid;grid-template-columns:260px 1fr;gap:32px}
+    .novel-content p {
+      margin-bottom: 18px;
+      text-align: justify;
+    }
 
-    /* sidebar */
-    .sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .chapters{list-style:none;padding:0;margin:0}
-    .chapters li{padding:10px;border-radius:8px;margin-bottom:6px;cursor:pointer;color:var(--muted)}
-    .chapters li.active{background:rgba(255,255,255,0.02);color:var(--text)}
+    .novel-content {
+      white-space: pre-line;
+    }
 
-    /* reader */
-    .reader{background:linear-gradient(180deg,var(--panel), #071017);padding:36px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
-    .meta{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:var(--muted);font-family:Inter,system-ui}
-    h1{margin:0 0 8px 0;font-size:28px}
-    .subtitle{font-size:14px}
-
-    article{max-width:var(--max-width);margin:0 auto;font-size:1rem}
-    p{margin:18px 0;text-align:justify}
-    .progress{height:6px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:22px}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent), #60a5fa);width:0%}
-
-    /* responsive */
-    @media (max-width:920px){.container{grid-template-columns:1fr;}.sidebar{order:2}}
-
-    /* small helper */
-    .muted{color:var(--muted)}
+    .separator {
+      text-align: center;
+      margin: 40px 0;
+      color: #888;
+    }
   </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div class="brand">WebNovel • Night</div>
+  <div class="container">
+    <h1>Chapter 1</h1>
+    <div class="novel-content">
+      <p>Inside the quarantine facility, a boy stood with a nervous expression. There was something unsettling about him—an eerie aura, as if the same hollow presence lingered within him. He stayed silent until a hand gently rested on his shoulder from behind.</p>
 
-    <div style="display:flex;gap:8px;align-items:center;margin-left:14px">
-      <div class="muted">Mode:</div>
-      <button id="toggle-theme" aria-pressed="true">Malam</button>
-    </div>
+      <p>“Are you okay, Laine?”</p>
 
-    <div class="controls">
-      <label class="muted">Ukuran</label>
-      <button id="dec-font">A-</button>
-      <button id="inc-font">A+</button>
+      <p>Laine turned and met the gaze of the woman beside him. She had sharp features framed by smooth, delicate skin, and her long black hair flowed down to her back. But what stood out the most were her eyes—piercing blue, the kind that could cut through anyone who looked too long. This woman was Aunt Serena, a healer at the nearby medical center.</p>
 
-      <label class="muted">Font</label>
-      <select id="font-select" title="Pilih jenis font">
-        <option value="serif">Libre Baskerville (Serif)</option>
-        <option value="sans">Inter (Sans)</option>
-      </select>
+      <p>His tense face must have betrayed his emotions, because concern immediately appeared in her expression.</p>
 
-      <label class="muted">Spasi</label>
-      <input id="line-range" type="range" min="1.2" max="2.2" step="0.05" value="1.8">
+      <p>“I’ll be fine,” Laine murmured. “Just… a little nervous.”</p>
 
-      <label class="muted">Lebar</label>
-      <input id="width-range" type="range" min="560" max="1100" step="20" value="820">
+      <p>Serena sighed softly, her lips curling into a reassuring smile. “Don’t be nervous. Besides, didn’t your pretty aunt turn out just fine?” She gave a small laugh, trying to lighten the mood.</p>
 
-      <button id="open-toc">Daftar Bab</button>
+      <p>Laine let out a chuckle, though brief, before a firm voice called from behind.</p>
+
+      <p>“Candidate Laine, are you ready?”</p>
+
+      <p>He turned and saw a man standing there. The figure was tall and commanding, his broad shoulders and athletic build leaving no doubt he was a seasoned awakened warrior. His sharp eyes carried the weight of countless battles, and his neatly combed black hair only added to his imposing presence.</p>
+
+      <p><i>I wonder what ability I’ll awaken with…</i></p>
+
+      <p>“Yes, sir.” Laine bowed slightly to Serena. “Thank you for seeing me off, Aunt.”</p>
+
+      <p>She waved dismissively, though her smile remained warm. “It’s nothing. Good luck with your awakening, Laine.”</p>
+
+      <p>Laine nodded once more and followed the man.</p>
+
+      <div class="separator">***</div>
+
+      <p>They moved from room to room as attendants checked his height, weight, and physique. Eventually, they descended a staircase that led to a sealed chamber.</p>
+
+      <p>The room was small, furnished only with a white bed and a chair. A two-way mirror stretched across one wall, a camera watched from the ceiling, and a red button sat mounted beside the glass. The metal walls gleamed faintly, built sturdy enough to contain any awakened who might lose control and turn hollow.</p>
+
+      <p>“Wait here for a while. Someone else will be monitoring you,” the officer instructed before leaving.</p>
+
+      <p>Laine sat on the bed, motionless. Minutes passed in silence, until the sound of a door opening pulled his attention.</p>
+
+      <p>A woman stepped in. Her black hair brushed her shoulders, her posture confident, and her cold green eyes made her presence sharp, unapproachable.</p>
+
+      <p>“Ahem. Candidate Laine, isn’t it?”</p>
+
+      <p>Caught staring, Laine only managed a stiff nod.</p>
+
+      <p>“My name is Cecily,” she said. “I’m here to guide candidates through the awakening process. My abilities are meant to assist you.”</p>
     </div>
   </div>
-
-  <main class="container">
-    <aside class="sidebar" id="toc">
-      <h3 style="margin-top:0">Daftar Bab</h3>
-      <ul class="chapters" id="chap-list">
-       /* <li class="active" data-chapter="1">Chapter</li> 
-
-      </ul>
-    </aside>
-
-    <section class="reader">
-      <div class="meta">
-        <div>
-          <h1 id="title">Chapter 1 - </h1>
-          <div class="subtitle">oleh Penulis • 8.5k kata • 12 Februari 2025</div>
-        </div>
-      </div>
-
-      <article id="chapter" style="max-width:var(--max-width)">
-Inside the carantine facility a boy stood with a nervous expression, the boy has eeire aura as if there’s a presence that hollow creatures have. He remained silent until a hand reached for his shoulder from behind
-“Are you okay Laine?”
-Laine shifted and gazed at the woman who stood beside him. The woman as a sharp feature with smooth delicate surface. She has a long black hair that’s reach her back, the most stiking about her though were her eyes with sharp blue color that seemed to pierce anything it looked. That woman was aunt Serena, she was a healer that worked at nearby medical center.  
-His face must have made an expression that the she starts worrying.
-“I’ll be fine, just… a little nervous”
-She put a worry expression on her face.
-“Don’t be nervous” she remained for a while and forced out a smile “Besides didn’t your pretty aunt turns out just fine?” she laughed.
-Laine chuckled for a while until a man voice called him from behind.
-“Candidate Laine, are you ready?
-Laine turned around to meet the voice, his gaze stoped at the man beside him. The man is tall and has an imposing build, his broad shoulders and athletic pyshique shown that he’s a powerful awakened with combat abillites. His gaze is sharp like all seasoned fighter does, he has a sharp feature with short black hair combed to the side.
-‘I wonder what ability I would get’
-“Yes sir” He turn around to meet the woman and bowed slightly “Thank you for seeing me off, aunt Serena”
-She waved her hand 
-“Ah its nothing, and good luck with your awakening Laine”
-Laine nodded and followed the man
-***
-The man led him from room to room, where they checked his height, weight, and physique before moving on. Eventually, they arrived at a door that led downstairs. They continued down until they reached a specific chamber.
-Inside was a small room with a white bed and a chair beside it. The walls held a large two-way mirror, a camera on the ceiling, and a red button mounted beside the glass. The chamber was built from sturdy metal alloy, designed to contain any awakened who might turn into a hollow.
-“Just wait here for a while. There’s supposed to be another awakened watching you.”
-Laine nodded and sat on the bed. The officer closed the door and left him alone. For a while, Laine sat motionless—until the sound of a door opening caught his attention.
-A woman entered, studying him closely. Like most awakened, she had sharp features. Her black hair hung to her shoulders, and her cold green eyes gave her an unapproachable air.
-“Ahem. Candidate Laine, isn’t it?”
-Laine must have been staring at her strangely, because he only gave a stiff nod in reply.
-“My name is Cecily. I’m here to help candidates like you awaken. I possess powers that assist in the process.”
-
-
-
-
-      </article>
-
-      <div class="progress" aria-hidden="true"><i id="prog"></i></div>
-    </section>
-  </main>
-
-  <script>
-    // controls
-    const root = document.documentElement;
-    const chapter = document.getElementById('chapter');
-    const prog = document.getElementById('prog');
-    const title = document.getElementById('title');
-
-    // font size controls
-    const inc = document.getElementById('inc-font');
-    const dec = document.getElementById('dec-font');
-    let baseSize = parseFloat(getComputedStyle(root).getPropertyValue('--base-font-size')) || 20;
-
-    function applyFontSize(){
-      root.style.setProperty('--base-font-size', baseSize + 'px');
-    }
-    inc.addEventListener('click', ()=>{ baseSize = Math.min(30, baseSize + 1); applyFontSize(); });
-    dec.addEventListener('click', ()=>{ baseSize = Math.max(14, baseSize - 1); applyFontSize(); });
-
-    // font family select
-    const fontSelect = document.getElementById('font-select');
-    fontSelect.addEventListener('change', e=>{
-      if(e.target.value === 'sans') root.style.setProperty('--font-family', "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial");
-      else root.style.setProperty('--font-family', "'Libre Baskerville', serif");
-    });
-
-    // line height
-    const lineRange = document.getElementById('line-range');
-    lineRange.addEventListener('input', e=>{ root.style.setProperty('--line-height', e.target.value); document.body.style.lineHeight = e.target.value; });
-
-    // width
-    const widthRange = document.getElementById('width-range');
-    widthRange.addEventListener('input', e=>{ root.style.setProperty('--max-width', e.target.value + 'px'); });
-
-    // chapters
-    const chapters = document.getElementById('chap-list');
-    chapters.addEventListener('click', e=>{
-      const li = e.target.closest('li');
-      if(!li) return;
-      [...chapters.querySelectorAll('li')].forEach(x=>x.classList.remove('active'));
-      li.classList.add('active');
-      // contoh pergantian konten sederhana (di sini hanya judul dipakai)
-      title.textContent = li.textContent;
-      // tulis logika fetch atau load konten bab di sini untuk produksi
-      chapter.innerHTML = '<p>Memuat teks untuk ' + li.textContent + '...</p>';
-      // simulasi isi
-      setTimeout(()=>{
-        chapter.innerHTML = '<p>Ini adalah isi contoh untuk '+li.textContent+'. Ganti kode ini dengan konten bab nyata dari server Anda atau file markdown yang di-render menjadi HTML.</p>' + '<p>Konten lebih banyak... menulis cerita Anda di sini.</p>';
-        window.scrollTo({top:0,behavior:'smooth'});
-      },350);
-    });
-
-    // progress
-    function updateProgress(){
-      const rect = chapter.getBoundingClientRect();
-      const total = chapter.scrollHeight - window.innerHeight;
-      const scrolled = window.scrollY;
-      // approximate: how far user has scrolled inside article
-      const articleTop = document.querySelector('.reader').offsetTop;
-      const articleHeight = document.querySelector('.reader').scrollHeight - window.innerHeight;
-      let pct = 0;
-      if(articleHeight>0) pct = Math.min(100, Math.max(0, (window.scrollY - articleTop) / articleHeight * 100));
-      prog.style.width = pct + '%';
-    }
-    window.addEventListener('scroll', updateProgress);
-    window.addEventListener('resize', updateProgress);
-    updateProgress();
-
-    // TOC toggle (mobile)
-    document.getElementById('open-toc').addEventListener('click', ()=>{
-      const toc = document.getElementById('toc');
-      toc.style.display = toc.style.display === 'none' ? 'block' : 'none';
-    });
-
-    // theme toggle (ke default malam)
-    const themeBtn = document.getElementById('toggle-theme');
-    themeBtn.addEventListener('click', ()=>{
-      const isDark = themeBtn.getAttribute('aria-pressed') === 'true';
-      if(isDark){
-        // switch to light
-        document.body.style.background = '#f6f7fb';
-        root.style.setProperty('--bg','#f6f7fb');
-        root.style.setProperty('--panel','#ffffff');
-        root.style.setProperty('--text','#0b1220');
-        root.style.setProperty('--muted','#4b5563');
-        root.style.setProperty('--accent','#2563eb');
-        themeBtn.textContent = 'Terang';
-        themeBtn.setAttribute('aria-pressed','false');
-      } else {
-        // switch to dark
-        root.style.setProperty('--bg','#0b1116');
-        root.style.setProperty('--panel','#0f1720');
-        root.style.setProperty('--text','#e6eef6');
-        root.style.setProperty('--muted','#9fb0c4');
-        root.style.setProperty('--accent','#7dd3fc');
-        themeBtn.textContent = 'Malam';
-        themeBtn.setAttribute('aria-pressed','true');
-      }
-    });
-
-    // preserve some preferences in localStorage
-    function savePrefs(){
-      const prefs = {size:baseSize,font:fontSelect.value,line:lineRange.value,width:widthRange.value};
-      localStorage.setItem('reader-prefs', JSON.stringify(prefs));
-    }
-    function loadPrefs(){
-      try{
-        const prefs = JSON.parse(localStorage.getItem('reader-prefs'));
-        if(!prefs) return;
-        baseSize = prefs.size||baseSize; applyFontSize();
-        if(prefs.font) fontSelect.value = prefs.font; fontSelect.dispatchEvent(new Event('change'));
-        if(prefs.line) lineRange.value = prefs.line; lineRange.dispatchEvent(new Event('input'));
-        if(prefs.width) widthRange.value = prefs.width; widthRange.dispatchEvent(new Event('input'));
-      }catch(e){/* ignore */}
-    }
-    [inc,dec,fontSelect,lineRange,widthRange].forEach(el=>el.addEventListener('change', savePrefs));
-    window.addEventListener('beforeunload', savePrefs);
-    loadPrefs();
-  </script>
 </body>
 </html>
